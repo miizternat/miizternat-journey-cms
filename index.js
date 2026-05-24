@@ -111,7 +111,7 @@ db.get(
     }
 
     if (!row) {
-      const hash = await bcrypt.hash(adminPassword, 10);
+      const hash = await bcrypt.hash(adminPassword, 8);
 
       db.run(
         `
