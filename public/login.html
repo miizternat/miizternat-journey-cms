@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Miizternat CMS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Prompt", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body
+    class="min-h-screen bg-[#0F0F12] text-white flex items-center justify-center px-4"
+  >
+    <div
+      class="w-full max-w-md bg-[#1E1E24] border border-white/10 rounded-3xl shadow-2xl p-8"
+    >
+      <div class="text-center mb-8">
+        <div
+          class="w-16 h-16 mx-auto rounded-2xl bg-orange-400/20 text-orange-400 flex items-center justify-center mb-4"
+        >
+          <i class="fa-solid fa-mountain-sun text-3xl"></i>
+        </div>
+
+        <h1 class="text-2xl font-bold">Miizternat CMS</h1>
+        <p class="text-gray-400 text-sm mt-1">เข้าสู่ระบบจัดการเว็บไซต์</p>
+      </div>
+
+      <form id="loginForm" class="space-y-5">
+        <div>
+          <label class="block text-sm font-semibold mb-2">Username</label>
+          <input
+            id="username"
+            type="text"
+            class="w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-orange-400 transition"
+            placeholder="admin"
+            required
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-2">Password</label>
+          <div class="relative">
+            <input
+              id="password"
+              type="password"
+              class="w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 pr-12 outline-none focus:border-orange-400 transition"
+              placeholder="••••••••"
+              required
+            />
+
+            <button
+              id="togglePassword"
+              type="button"
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+            >
+              <i id="passwordIcon" class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <p id="errorMessage" class="hidden text-sm text-red-400"></p>
+
+        <button
+          id="loginButton"
+          type="submit"
+          class="w-full bg-orange-400 hover:bg-orange-500 text-white font-bold py-4 rounded-2xl transition shadow-lg shadow-orange-400/20"
+        >
+          <i class="fa-solid fa-right-to-bracket mr-2"></i>
+          เข้าสู่ระบบ
+        </button>
+      </form>
+
+      <!-- <div class="mt-6 text-center text-xs text-gray-500">
+        Default:
+        <span class="text-orange-400">admin / 1234</span>
+      </div>
+    </div> -->
+
+    <script>
+async function checkAlreadyLogin() {
+  try {
+    const res = await fetch(`${window.location.origin}/api/me`, {
+      credentials: "include",
+    });
+
+    if (res.ok) {
+      window.location.href = "admin-dashboard.html";
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+      const form = document.getElementById("loginForm");
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+      const errorMessage = document.getElementById("errorMessage");
+      const loginButton = document.getElementById("loginButton");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        errorMessage.classList.add("hidden");
+        loginButton.disabled = true;
+        loginButton.innerHTML = `
+          <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+          กำลังเข้าสู่ระบบ...
+        `;
+
+        try {
+const res = await fetch(`${window.location.origin}/api/login`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  credentials: "include",
+  body: JSON.stringify({
+    username: usernameInput.value.trim(),
+    password: passwordInput.value,
+  }),
+});
+
+          const result = await res.json();
+
+          if (!res.ok) {
+            throw new Error(result.error || "เข้าสู่ระบบไม่สำเร็จ");
+          }
+
+          window.location.href = "admin-dashboard.html";
+        } catch (error) {
+          errorMessage.textContent = "Username หรือ Password ไม่ถูกต้อง";
+          errorMessage.classList.remove("hidden");
+
+          loginButton.disabled = false;
+          loginButton.innerHTML = `
+            <i class="fa-solid fa-right-to-bracket mr-2"></i>
+            เข้าสู่ระบบ
+          `;
+        }
+      });
+
+      document
+        .getElementById("togglePassword")
+        .addEventListener("click", () => {
+          const icon = document.getElementById("passwordIcon");
+          const isPassword = passwordInput.type === "password";
+
+          passwordInput.type = isPassword ? "text" : "password";
+          icon.className = isPassword
+            ? "fa-solid fa-eye-slash"
+            : "fa-solid fa-eye";
+        });
+    </script>
+  </body>
+</html>

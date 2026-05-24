@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dashboard | Miizternat CMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+
+  <body
+    id="admin-body"
+    class="bg-[#0F0F12] text-white min-h-screen transition-colors duration-300"
+  >
+    <div class="flex min-h-screen">
+      <aside
+        id="admin-sidebar"
+        class="w-72 bg-[#111116] border-r border-white/10 transition-colors duration-300 fixed inset-y-0 left-0 hidden lg:flex flex-col"
+      >
+        <div class="p-6 border-b border-white/10">
+          <h1 class="text-xl font-bold">Miizternat CMS</h1>
+          <p class="text-xs text-gray-400">Travel Journey Admin</p>
+        </div>
+
+        <nav class="flex-1 p-4 space-y-2 text-sm">
+          <a
+            href="admin-dashboard.html"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl bg-orange-400 text-white"
+          >
+            <i class="fa-solid fa-chart-line w-5"></i>
+            Dashboard
+          </a>
+
+          <a
+            href="admin-list.html"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition"
+          >
+            <i class="fa-solid fa-map-location-dot w-5 text-orange-400"></i>
+            จัดการทริปเดินทาง
+          </a>
+
+          <a
+            href="admin.html"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition"
+          >
+            <i class="fa-solid fa-plus w-5 text-orange-400"></i>
+            เพิ่มทริปใหม่
+          </a>
+
+          <a
+            href="admin-settings.html"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition"
+          >
+            <i class="fa-solid fa-sliders w-5 text-orange-400"></i>
+            Website Settings
+          </a>
+
+          <button
+            id="admin-theme-toggle"
+            type="button"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition w-full text-left"
+          >
+            <i
+              id="admin-theme-icon"
+              class="fa-solid fa-moon w-5 text-orange-400"
+            ></i>
+            โหมดสว่าง / มืด
+          </button>
+
+          <a
+            href="index.html"
+            target="_blank"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition"
+          >
+            <i
+              class="fa-solid fa-arrow-up-right-from-square w-5 text-orange-400"
+            ></i>
+            ดูหน้าเว็บไซต์
+          </a>
+          <button
+            id="logoutBtn"
+            type="button"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition w-full text-left"
+          >
+            <i class="fa-solid fa-right-from-bracket w-5"></i>
+            Logout
+          </button>
+        </nav>
+      </aside>
+
+      <main class="flex-1 lg:ml-72">
+        <header
+          id="admin-header"
+          class="sticky top-0 z-30 bg-[#0F0F12]/90 backdrop-blur-md border-b border-white/10 px-6 py-4 transition-colors duration-300"
+        >
+          <p class="text-sm text-orange-400 font-medium">Admin CMS</p>
+          <h2 class="text-2xl font-bold">Dashboard</h2>
+        </header>
+
+        <section class="p-6 md:p-10">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div
+              class="admin-card bg-[#1E1E24] border border-white/10 rounded-3xl p-6 transition-colors duration-300"
+            >
+              <p class="admin-muted text-gray-400 text-sm">จำนวนทริปทั้งหมด</p>
+              <h3 id="totalTrips" class="text-4xl font-bold mt-3">0</h3>
+            </div>
+
+            <div
+              class="admin-card bg-[#1E1E24] border border-white/10 rounded-3xl p-6 transition-colors duration-300"
+            >
+              <p class="admin-muted text-gray-400 text-sm">จำนวนรูปทั้งหมด</p>
+              <h3 id="totalImages" class="text-4xl font-bold mt-3">0</h3>
+            </div>
+
+            <div
+              class="admin-card bg-[#1E1E24] border border-white/10 rounded-3xl p-6 transition-colors duration-300"
+            >
+              <p class="admin-muted text-gray-400 text-sm">จำนวนหมวดหมู่</p>
+              <h3 id="totalCategories" class="text-4xl font-bold mt-3">0</h3>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <div
+              class="admin-card xl:col-span-2 bg-[#1E1E24] border border-white/10 rounded-3xl p-6 transition-colors duration-300"
+            >
+              <h3 class="text-xl font-bold mb-5">ทริปล่าสุด</h3>
+              <div id="latestTrips" class="space-y-4"></div>
+            </div>
+
+            <div
+              class="admin-card bg-[#1E1E24] border border-white/10 rounded-3xl p-6 transition-colors duration-300"
+            >
+              <h3 class="text-xl font-bold mb-5">เมนูลัด</h3>
+
+              <div class="space-y-3">
+                <a
+                  href="admin.html"
+                  class="block bg-orange-400 hover:bg-orange-500 text-white rounded-2xl px-5 py-4 font-bold"
+                >
+                  <i class="fa-solid fa-plus mr-2"></i>
+                  เพิ่มทริปใหม่
+                </a>
+
+                <a
+                  href="admin-list.html"
+                  class="admin-shortcut block bg-white/10 hover:bg-white/15 rounded-2xl px-5 py-4 font-bold transition"
+                >
+                  <i class="fa-solid fa-list mr-2"></i>
+                  จัดการทริป
+                </a>
+
+                <a
+                  href="admin-settings.html"
+                  class="admin-shortcut block bg-white/10 hover:bg-white/15 rounded-2xl px-5 py-4 font-bold transition"
+                >
+                  <i class="fa-solid fa-sliders mr-2"></i>
+                  Website Settings
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+
+    <script>
+      function isLightMode() {
+        return localStorage.getItem("adminTheme") === "light";
+      }
+
+      function applyTheme() {
+        const isLight = isLightMode();
+
+        const body = document.getElementById("admin-body");
+        const sidebar = document.getElementById("admin-sidebar");
+        const header = document.getElementById("admin-header");
+        const icon = document.getElementById("admin-theme-icon");
+
+        if (isLight) {
+          body.classList.remove("bg-[#0F0F12]", "text-white");
+          body.classList.add("bg-slate-100", "text-slate-900");
+
+          sidebar.classList.remove("bg-[#111116]", "border-white/10");
+          sidebar.classList.add("bg-white", "border-slate-200");
+
+          header.classList.remove("bg-[#0F0F12]/90", "border-white/10");
+          header.classList.add("bg-white/90", "border-slate-200");
+
+          document.querySelectorAll(".admin-card").forEach((card) => {
+            card.classList.remove("bg-[#1E1E24]", "border-white/10");
+            card.classList.add("bg-white", "border-slate-200");
+          });
+
+          document.querySelectorAll(".admin-muted").forEach((el) => {
+            el.classList.remove("text-gray-400");
+            el.classList.add("text-slate-500");
+          });
+
+          document.querySelectorAll(".admin-shortcut").forEach((el) => {
+            el.classList.remove("bg-white/10", "hover:bg-white/15");
+            el.classList.add("bg-slate-100", "hover:bg-slate-200");
+          });
+
+          icon.className = "fa-solid fa-sun w-5 text-orange-400";
+        } else {
+          icon.className = "fa-solid fa-moon w-5 text-orange-400";
+        }
+      }
+
+      document
+        .getElementById("admin-theme-toggle")
+        .addEventListener("click", () => {
+          const current = isLightMode() ? "dark" : "light";
+          localStorage.setItem("adminTheme", current);
+          location.reload();
+        });
+
+      applyTheme();
+    </script>
+    <script>
+      document
+        .getElementById("logoutBtn")
+        ?.addEventListener("click", async () => {
+          await fetch(`${window.location.origin}/api/logout`, {
+            method: "POST",
+            credentials: "include",
+          });
+
+          window.location.href = "login.html";
+        });
+    </script>
+  </body>
+</html>

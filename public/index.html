@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="th" class="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="page-title">Miizternat Journey</title>
+    <meta
+      name="description"
+      content="บันทึกการเดินทาง เดินป่า ภูเขา น้ำตก และเรื่องราวการผจญภัยของมิสเตอร์นัต"
+    />
+
+    <meta property="og:title" content="Miizternat Journey" />
+    <meta
+      property="og:description"
+      content="สะพายเป้ กางเต็นท์ เดินป่า และปีนเขา บันทึกทุกเส้นทางการผจญภัย"
+    />
+    <meta property="og:image" content="URL_รูป_Hero_หรือ_OG_Image" />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              brand: "#2F4F4F",
+              brandlight: "#4C7B7B",
+              accent: "#E6A15C",
+              darkbg: "#0F0F12",
+              darkcard: "#1E1E24",
+            },
+            fontFamily: {
+              sans: ["Prompt", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      .fade-up {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.9s ease;
+      }
+
+      .fade-up.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Prompt", sans-serif;
+      }
+
+      .nav-link {
+        transition:
+          color 0.3s,
+          border-bottom 0.3s;
+        border-bottom: 2px solid transparent;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        color: #e6a15c;
+        border-bottom: 2px solid #e6a15c;
+      }
+
+      .hero-bg {
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.9)),
+          url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2000&q=80");
+        background-size: cover;
+        background-position: center;
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #e5e7eb;
+      }
+
+      .dark ::-webkit-scrollbar-track {
+        background: #0f0f12;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #8b5a2b;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #2f4f4f;
+      }
+
+      .hide-scroll::-webkit-scrollbar {
+        display: none;
+      }
+
+      .hide-scroll {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      .filter-btn.active,
+      .gal-btn.active {
+        background-color: #e6a15c;
+        color: white;
+        border-color: #e6a15c;
+      }
+
+      .map-pin-anim {
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .dark .leaflet-layer,
+      .dark .leaflet-control-zoom-in,
+      .dark .leaflet-control-zoom-out,
+      .dark .leaflet-control-attribution {
+        filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+      }
+      .hero-fade {
+        animation: heroFade 1.2s ease;
+      }
+
+      @keyframes heroFade {
+        from {
+          opacity: 0;
+          transform: translateY(25px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body
+    class="antialiased bg-gray-50 text-gray-800 dark:bg-darkbg dark:text-gray-200 transition-colors duration-300"
+  >
+    <!-- NAVBAR -->
+    <nav
+      class="fixed w-full z-50 bg-white/95 dark:bg-[#0F0F12]/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-all py-4 px-6 md:px-12 flex justify-between items-center shadow-sm"
+    >
+      <a
+        href="index.html"
+        class="flex items-center gap-2 text-xl font-bold text-brand dark:text-white"
+      >
+        <i class="fa-solid fa-map-location-dot text-accent text-2xl"></i>
+        <span id="site-name">Miizternat Journey</span>
+      </a>
+
+      <div
+        class="hidden md:flex gap-6 text-sm font-medium text-gray-600 dark:text-gray-300 items-center"
+      >
+        <a href="#home" class="nav-link py-1">
+          <i class="fa-solid fa-campground mr-1"></i>
+          หน้าแรก
+        </a>
+
+        <a href="#trips" class="nav-link py-1">
+          <i class="fa-solid fa-shoe-prints mr-1"></i>
+          ผจญภัย
+        </a>
+
+        <a href="#timeline" class="nav-link py-1">
+          <i class="fa-solid fa-route mr-1"></i>
+          ไทม์ไลน์
+        </a>
+
+        <a href="#map" class="nav-link py-1">
+          <i class="fa-solid fa-map-location-dot mr-1"></i>
+          แผนที่
+        </a>
+
+        <a href="#gallery" class="nav-link py-1">
+          <i class="fa-solid fa-images mr-1"></i>
+          แกลเลอรี
+        </a>
+
+        <a href="#about" class="nav-link py-1">
+          <i class="fa-solid fa-user-astronaut mr-1"></i>
+          เกี่ยวกับฉัน
+        </a>
+
+        <button
+          id="theme-toggle"
+          class="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
+        >
+          <i
+            id="theme-icon"
+            class="fa-solid fa-moon text-gray-700 dark:text-yellow-400"
+          ></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <!-- HERO -->
+    <section
+      id="home"
+      class="hero-bg min-h-screen flex flex-col justify-center items-center text-center px-4 pt-20 relative overflow-hidden"
+    >
+      <div class="absolute inset-0 bg-black/55 z-0"></div>
+
+      <div class="relative z-10 max-w-5xl mx-auto">
+        <h1
+          id="hero-title"
+          class="text-5xl md:text-7xl font-bold text-white mb-6 tracking-wide leading-tight drop-shadow-2xl"
+        >
+          บันทึกการเดินทางของ <br />
+          <span class="text-green-400">มิสเตอร์นัต</span>
+        </h1>
+
+        <p
+          id="hero-description"
+          class="text-gray-200 max-w-3xl mx-auto text-lg md:text-xl font-light leading-relaxed drop-shadow-lg"
+        >
+          สะพายเป้ กางเต็นท์ เดินป่า และปีนเขา
+          <br class="hidden md:block" />
+          รวบรวมทุกเรื่องราวการผจญภัยที่ธรรมชาติรอให้เราไปสัมผัส
+        </p>
+      </div>
+    </section>
+
+    <!-- TRIPS -->
+    <section id="trips" class="max-w-7xl mx-auto px-6 md:px-12 py-24">
+      <div class="mb-8 flex flex-col items-center text-center">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-brand dark:text-white mb-2"
+        >
+          เส้นทางผจญภัย
+        </h2>
+
+        <div class="w-20 h-1 bg-accent rounded-full mb-6"></div>
+
+        <div class="flex flex-wrap justify-center gap-3 mb-8" id="trip-filters">
+          <button
+            class="filter-btn active border border-gray-300 dark:border-gray-700 px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
+            data-filter="all"
+          >
+            ทั้งหมด
+          </button>
+
+          <button
+            class="filter-btn border border-gray-300 dark:border-gray-700 px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
+            data-filter="เดินป่า"
+          >
+            เดินป่า
+          </button>
+
+          <button
+            class="filter-btn border border-gray-300 dark:border-gray-700 px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
+            data-filter="อุทยาน"
+          >
+            อุทยาน
+          </button>
+
+          <button
+            class="filter-btn border border-gray-300 dark:border-gray-700 px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
+            data-filter="ทะเล"
+          >
+            ทะเล
+          </button>
+
+          <button
+            class="filter-btn border border-gray-300 dark:border-gray-700 px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
+            data-filter="น้ำตก"
+          >
+            น้ำตก
+          </button>
+        </div>
+      </div>
+
+      <div class="relative group">
+        <button
+          id="slide-left"
+          class="absolute -left-4 top-1/2 -translate-y-1/2 z-20 bg-white dark:bg-[#2A2A35] text-brand dark:text-white p-3 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 hidden md:block"
+        >
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div
+          id="trips-container"
+          class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scroll scroll-smooth px-2"
+        >
+          <!-- Skeleton -->
+          <div class="flex gap-6">
+            <div
+              class="min-w-[320px] bg-white dark:bg-darkcard rounded-xl overflow-hidden shadow-md animate-pulse"
+            >
+              <div class="h-48 bg-gray-300 dark:bg-gray-700"></div>
+              <div class="p-5 space-y-3">
+                <div class="h-6 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded"></div>
+                <div
+                  class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-2/3"
+                ></div>
+              </div>
+            </div>
+
+            <div
+              class="min-w-[320px] bg-white dark:bg-darkcard rounded-xl overflow-hidden shadow-md animate-pulse"
+            >
+              <div class="h-48 bg-gray-300 dark:bg-gray-700"></div>
+              <div class="p-5 space-y-3">
+                <div class="h-6 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded"></div>
+                <div
+                  class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-2/3"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          id="slide-right"
+          class="absolute -right-4 top-1/2 -translate-y-1/2 z-20 bg-white dark:bg-[#2A2A35] text-brand dark:text-white p-3 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 hidden md:block"
+        >
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section
+      id="timeline"
+      class="bg-gray-200/50 dark:bg-[#15151A] py-24 border-y border-gray-200 dark:border-gray-800/50"
+    >
+      <div class="max-w-4xl mx-auto px-6 md:px-12">
+        <div class="mb-12 text-center">
+          <h2
+            class="text-3xl md:text-4xl font-bold text-brand dark:text-white mb-2"
+          >
+            ไทม์ไลน์การเดินทาง
+          </h2>
+
+          <div class="w-20 h-1 bg-accent rounded-full mb-4 mx-auto"></div>
+        </div>
+
+        <div
+          id="timeline-container"
+          class="relative border-l-2 border-accent/50 ml-3 md:ml-6 space-y-12"
+        ></div>
+      </div>
+    </section>
+
+    <!-- MAP -->
+    <section id="map" class="max-w-7xl mx-auto px-6 md:px-12 py-24">
+      <div class="mb-12 flex flex-col items-center text-center">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-brand dark:text-white mb-2"
+        >
+          แผนที่หมุดหมาย
+        </h2>
+
+        <div class="w-20 h-1 bg-accent rounded-full mb-4"></div>
+
+        <p class="text-gray-600 dark:text-gray-400">
+          แกะรอยพิกัดธรรมชาติทั่วไทย
+        </p>
+      </div>
+
+      <div
+        class="w-full h-[500px] bg-gray-200 dark:bg-darkcard rounded-2xl overflow-hidden shadow-lg border border-gray-300 dark:border-gray-700 relative"
+      >
+        <div id="real-map" class="w-full h-full z-10"></div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section
+      id="gallery"
+      class="bg-gray-200/50 dark:bg-[#15151A] py-24 border-y border-gray-200 dark:border-gray-800/50"
+    >
+      <div class="max-w-7xl mx-auto px-6 md:px-12">
+        <div class="mb-10 flex flex-col items-center text-center">
+          <h2
+            class="text-3xl md:text-4xl font-bold text-brand dark:text-white mb-2"
+          >
+            แกลเลอรีภาพถ่าย
+          </h2>
+
+          <div class="w-20 h-1 bg-accent rounded-full mb-6"></div>
+        </div>
+
+        <div
+          id="photo-grid"
+          class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4"
+        ></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="max-w-7xl mx-auto px-6 md:px-12 py-24">
+      <div id="about-container"></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer
+      class="bg-gray-200 dark:bg-[#0B0B0E] py-8 text-center text-sm text-gray-600 dark:text-gray-500 border-t border-gray-300 dark:border-gray-800"
+    >
+      <p>
+        <i class="fa-solid fa-mountain text-accent mr-1"></i>
+        © 2026 Miizternat Journey.
+      </p>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/index.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".fade-up").forEach((el) => {
+          el.classList.add("show");
+        });
+      });
+    </script>
+  </body>
+</html>

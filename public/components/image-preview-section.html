@@ -1,0 +1,83 @@
+<div
+  class="bg-[#1E1E24] border border-white/10 rounded-3xl p-6 md:p-8 shadow-xl"
+>
+  <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+    <i class="fa-solid fa-image text-orange-400"></i>
+    รูปภาพ
+  </h2>
+
+  <!-- COVER IMAGE -->
+  <div class="mb-8">
+    <label class="block text-sm font-semibold mb-2"> URL รูปภาพหน้าปก * </label>
+
+    <input
+      id="cover_image"
+      type="url"
+      required
+      placeholder="https://..."
+      class="w-full bg-[#111116] border border-white/10 rounded-2xl px-4 py-4 outline-none focus:border-orange-400 transition"
+    />
+  </div>
+
+  <!-- PREVIEW -->
+  <div
+    class="relative rounded-3xl overflow-hidden border border-white/10 bg-[#111116] min-h-[500px] flex items-center justify-center"
+    style="
+      background-image:
+        linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%);
+      background-size: 24px 24px;
+      background-position:
+        0 0,
+        0 12px,
+        12px -12px,
+        -12px 0px;
+    "
+  >
+    <!-- EMPTY -->
+    <div
+      id="coverEmpty"
+      class="absolute inset-0 flex flex-col items-center justify-center text-gray-500"
+    >
+      <i class="fa-regular fa-image text-6xl mb-4 opacity-40"></i>
+
+      <p class="text-lg font-medium">Preview รูปหน้าปก</p>
+
+      <p class="text-sm opacity-60 mt-1">รองรับทั้งแนวตั้ง และแนวนอน</p>
+    </div>
+
+    <!-- IMAGE -->
+    <img
+      id="coverPreview"
+      src=""
+      class="hidden max-h-[800px] w-auto h-auto object-contain transition duration-500 hover:scale-[1.02]"
+      loading="lazy"
+      decoding="async"
+    />
+
+    <!-- OVERLAY -->
+    <div
+      class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"
+    ></div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="mt-8">
+    <label class="block text-sm font-semibold mb-3">
+      รูปภาพเพิ่มเติมใน Gallery
+    </label>
+
+    <div id="galleryInputs" class="space-y-3"></div>
+
+    <button
+      type="button"
+      onclick="addGalleryInput('')"
+      class="mt-4 inline-flex items-center gap-2 text-orange-400 hover:text-orange-300 font-medium transition"
+    >
+      <i class="fa-solid fa-plus"></i>
+      เพิ่มช่องใส่รูปภาพ
+    </button>
+  </div>
+</div>

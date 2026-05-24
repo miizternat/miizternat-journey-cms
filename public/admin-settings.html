@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Website Settings | Miizternat Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      body {
+        font-family: "Prompt", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body
+    id="admin-body"
+    class="bg-[#0F0F12] text-gray-100 min-h-screen transition-colors duration-300"
+  >
+    <div class="flex min-h-screen">
+      <aside
+        id="admin-sidebar"
+        class="w-72 bg-[#111116] border-r border-white/10 fixed inset-y-0 left-0 hidden lg:flex flex-col transition-colors duration-300"
+      >
+        <div class="p-6 border-b border-white/10">
+          <a href="index.html" class="flex items-center gap-3">
+            <div
+              class="w-11 h-11 rounded-2xl bg-orange-400/20 text-orange-400 flex items-center justify-center"
+            >
+              <i class="fa-solid fa-mountain-sun text-xl"></i>
+            </div>
+            <div>
+              <h1 class="font-bold text-lg leading-tight">Miizternat</h1>
+              <p class="text-xs text-gray-400">Journey CMS</p>
+            </div>
+          </a>
+        </div>
+
+        <nav class="flex-1 p-4 space-y-2 text-sm">
+          <a
+            href="admin-dashboard.html"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition"
+          >
+            <i class="fa-solid fa-chart-line w-5 text-orange-400"></i>
+            Dashboard
+          </a>
+
+          <a
+            href="admin-list.html"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition"
+          >
+            <i class="fa-solid fa-map-location-dot w-5 text-orange-400"></i>
+            จัดการทริปเดินทาง
+          </a>
+
+          <a
+            href="admin.html"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition"
+          >
+            <i class="fa-solid fa-plus w-5 text-orange-400"></i>
+            เพิ่มทริปใหม่
+          </a>
+
+          <a
+            href="admin-settings.html"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl bg-orange-400 text-white shadow-lg shadow-orange-400/20"
+          >
+            <i class="fa-solid fa-sliders w-5"></i>
+            Website Settings
+          </a>
+
+          <button
+            id="admin-theme-toggle"
+            type="button"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition w-full text-left"
+          >
+            <i
+              id="admin-theme-icon"
+              class="fa-solid fa-moon w-5 text-orange-400"
+            ></i>
+            โหมดสว่าง / มืด
+          </button>
+
+          <a
+            href="index.html"
+            target="_blank"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition"
+          >
+            <i
+              class="fa-solid fa-arrow-up-right-from-square w-5 text-orange-400"
+            ></i>
+            ดูหน้าเว็บไซต์
+          </a>
+          <button
+            id="logoutBtn"
+            type="button"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition w-full text-left"
+          >
+            <i class="fa-solid fa-right-from-bracket w-5"></i>
+            Logout
+          </button>
+        </nav>
+
+        <div class="p-4 border-t border-white/10 text-xs text-gray-500">
+          Local CMS / No Login
+        </div>
+      </aside>
+
+      <main class="flex-1 lg:ml-72">
+        <header
+          id="admin-header"
+          class="sticky top-0 z-30 bg-[#0F0F12]/90 backdrop-blur-md border-b border-white/10 px-6 py-4 transition-colors duration-300"
+        >
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-orange-400 font-medium">Admin CMS</p>
+              <h2 class="text-2xl font-bold">Website Settings</h2>
+            </div>
+
+            <a
+              href="admin-list.html"
+              class="bg-white/10 hover:bg-white/15 text-white px-4 py-2 rounded-xl text-sm transition flex items-center gap-2"
+            >
+              <i class="fa-solid fa-arrow-left"></i>
+              กลับหน้าจัดการทริป
+            </a>
+          </div>
+        </header>
+
+        <section class="p-6 md:p-10">
+          <div class="max-w-5xl mx-auto grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <form
+              id="settingsForm"
+              class="admin-card xl:col-span-2 bg-[#1E1E24] border border-white/10 rounded-3xl p-6 md:p-8 shadow-xl space-y-6 transition-colors duration-300"
+            >
+              <div>
+                <h3 class="text-xl font-bold mb-1">ข้อมูลหน้าเว็บไซต์</h3>
+                <p class="text-gray-400 text-sm">
+                  ใช้สำหรับปรับ Hero และ About Me บนหน้าแรก
+                </p>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label class="block text-sm font-semibold mb-2"
+                    >Site Name</label
+                  >
+                  <input
+                    id="site_name"
+                    type="text"
+                    class="admin-input w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-orange-400 transition"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold mb-2"
+                    >ชื่อ About</label
+                  >
+                  <input
+                    id="about_name"
+                    type="text"
+                    class="admin-input w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-orange-400 transition"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold mb-2"
+                  >Hero Title</label
+                >
+                <input
+                  id="hero_title"
+                  type="text"
+                  class="admin-input w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-orange-400 transition"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold mb-2"
+                  >Hero Description</label
+                >
+                <textarea
+                  id="hero_description"
+                  rows="3"
+                  class="admin-input w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-orange-400 transition"
+                ></textarea>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold mb-2"
+                  >Hero Image URL</label
+                >
+                <input
+                  id="hero_image"
+                  type="url"
+                  class="admin-input w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-orange-400 transition"
+                  placeholder="https://i.ibb.co/..."
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold mb-2"
+                  >About Description</label
+                >
+                <textarea
+                  id="about_description"
+                  rows="5"
+                  class="admin-input w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-orange-400 transition"
+                ></textarea>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold mb-2">Quote</label>
+                <textarea
+                  id="about_quote"
+                  rows="3"
+                  class="admin-input w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-orange-400 transition"
+                ></textarea>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold mb-2"
+                  >About Image URL</label
+                >
+                <input
+                  id="about_image"
+                  type="url"
+                  class="admin-input w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-orange-400 transition"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold mb-2"
+                  >Donation Link</label
+                >
+                <input
+                  id="donation_link"
+                  type="url"
+                  class="admin-input w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-orange-400 transition"
+                />
+              </div>
+
+              <button
+                type="submit"
+                class="w-full bg-orange-400 hover:bg-orange-500 text-white font-bold py-4 rounded-2xl transition transform hover:-translate-y-0.5 shadow-lg shadow-orange-400/20"
+              >
+                <i class="fa-solid fa-save mr-2"></i>
+                บันทึก Website Settings
+              </button>
+            </form>
+
+            <aside class="space-y-6">
+              <div
+                class="admin-card bg-[#1E1E24] border border-white/10 rounded-3xl p-5 shadow-xl transition-colors duration-300"
+              >
+                <h3 class="font-bold mb-4 flex items-center gap-2">
+                  <i class="fa-solid fa-eye text-orange-400"></i>
+                  Preview About
+                </h3>
+
+                <div
+                  id="preview-card"
+                  class="rounded-2xl overflow-hidden aspect-[4/5] bg-black/30 mb-4 transition-colors duration-300"
+                >
+                  <img
+                    id="preview_about_image"
+                    src=""
+                    class="w-full h-full object-cover"
+                    onerror="
+                      this.src =
+                        'https://via.placeholder.com/600x750?text=Preview'
+                    "
+                  />
+                </div>
+
+                <p class="text-xs text-orange-400 font-bold uppercase mb-1">
+                  เกี่ยวกับฉัน
+                </p>
+                <h4 id="preview_about_name" class="text-2xl font-bold mb-3">
+                  -
+                </h4>
+                <p
+                  id="preview_about_description"
+                  class="text-sm text-gray-400 leading-relaxed mb-4"
+                >
+                  -
+                </p>
+                <blockquote
+                  id="preview_about_quote"
+                  class="border-l-4 border-orange-400 pl-3 text-sm italic text-gray-300"
+                >
+                  -
+                </blockquote>
+              </div>
+
+              <div
+                class="admin-card bg-[#1E1E24] border border-white/10 rounded-3xl p-5 shadow-xl text-sm text-gray-400 leading-relaxed transition-colors duration-300"
+              >
+                <h3 class="font-bold text-white mb-2 note-title">หมายเหตุ</h3>
+                <p>
+                  หน้านี้แก้ข้อมูลผ่าน
+                  <code class="text-orange-400">/api/settings</code>
+                  และไม่กระทบข้อมูลทริปใน table
+                  <code class="text-orange-400">trips</code>
+                </p>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/settings.js"></script>
+
+    <script>
+      function isLightMode() {
+        return localStorage.getItem("adminTheme") === "light";
+      }
+
+      function applyTheme() {
+        const isLight = isLightMode();
+
+        const body = document.getElementById("admin-body");
+        const sidebar = document.getElementById("admin-sidebar");
+        const header = document.getElementById("admin-header");
+        const icon = document.getElementById("admin-theme-icon");
+        const previewCard = document.getElementById("preview-card");
+
+        if (isLight) {
+          body.classList.remove("bg-[#0F0F12]", "text-gray-100");
+          body.classList.add("bg-slate-100", "text-slate-900");
+
+          sidebar.classList.remove("bg-[#111116]", "border-white/10");
+          sidebar.classList.add("bg-white", "border-slate-200");
+
+          header.classList.remove("bg-[#0F0F12]/90", "border-white/10");
+          header.classList.add("bg-white/90", "border-slate-200");
+
+          document.querySelectorAll(".admin-card").forEach((card) => {
+            card.classList.remove("bg-[#1E1E24]", "border-white/10");
+            card.classList.add("bg-white", "border-slate-200");
+          });
+
+          document.querySelectorAll(".admin-input").forEach((input) => {
+            input.classList.remove(
+              "bg-[#111116]",
+              "border-white/10",
+              "text-white",
+            );
+            input.classList.add(
+              "bg-slate-50",
+              "border-slate-300",
+              "text-slate-900",
+            );
+          });
+
+          if (previewCard) {
+            previewCard.classList.remove("bg-black/30");
+            previewCard.classList.add("bg-slate-50");
+          }
+
+          document.querySelectorAll(".note-title").forEach((el) => {
+            el.classList.remove("text-white");
+            el.classList.add("text-slate-900");
+          });
+
+          icon.className = "fa-solid fa-sun w-5 text-orange-400";
+        } else {
+          icon.className = "fa-solid fa-moon w-5 text-orange-400";
+        }
+      }
+
+      document
+        .getElementById("admin-theme-toggle")
+        .addEventListener("click", () => {
+          const current = isLightMode() ? "dark" : "light";
+          localStorage.setItem("adminTheme", current);
+          location.reload();
+        });
+
+      applyTheme();
+    </script>
+    <script>
+      document
+        .getElementById("logoutBtn")
+        ?.addEventListener("click", async () => {
+          await fetch(`${window.location.origin}/api/logout`, {
+            method: "POST",
+            credentials: "include",
+          });
+
+          window.location.href = "login.html";
+        });
+    </script>
+  </body>
+</html>
