@@ -35,7 +35,7 @@ app.use(
   }),
 );
 
-const dbPath = process.env.DB_PATH || "./database.sqlite";
+const dbPath = "./database.sqlite";
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) console.error(err);
   else console.log("Connected to SQLite database.");
